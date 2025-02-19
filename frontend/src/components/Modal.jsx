@@ -1,5 +1,4 @@
 import { useEffect } from "react";
-import LoadingSpinner from "./LoadingSpinner";
 
 function DeleteConfirmationModal({ isOpen, onClose, onConfirm, loading }) {
   useEffect(() => {
@@ -16,7 +15,6 @@ function DeleteConfirmationModal({ isOpen, onClose, onConfirm, loading }) {
 
   return (
     <>
-      {/* {loading && <LoadingSpinner />} */}
       <div className="fixed inset-0 flex items-center justify-center bg-white bg-opacity-90 backdrop-blur-sm">
         <div className="bg-white p-6 rounded-xl shadow-xl shadow-blue-200 w-96 text-center transform transition-all scale-100">
           <h2 className="text-2xl font-bold text-gray-800">Delete Image?</h2>

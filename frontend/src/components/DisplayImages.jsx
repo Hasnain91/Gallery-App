@@ -54,7 +54,11 @@ function DisplayImages() {
 
   return (
     <>
-      {isLoading && <LoadingSpinner size="100px" color="#0073e6" />}
+      {isLoading && (
+        <div className="fixed inset-0 flex items-center justify-center bg-white bg-opacity-60 backdrop-blur-sm z-50">
+          <LoadingSpinner size="100px" color="#0073e6" />
+        </div>
+      )}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 m-10">
         {images.map((image, index) => (
           <div
@@ -76,8 +80,6 @@ function DisplayImages() {
               }}
               className="text-2xl font-medium bg-red-700 text-red-200 hover:text-red-700 hover:bg-red-200 hover:cursor-pointer"
             >
-              {/* {isLoading ? "Deleting..." : "Delete"} */}
-              {/* {isLoading ? <LoadingSpinner /> : "Delete"} */}
               Delete
             </button>
           </div>
