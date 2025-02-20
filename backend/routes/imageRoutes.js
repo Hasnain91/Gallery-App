@@ -1,6 +1,8 @@
 const express = require("express");
 const multer = require("multer");
 
+const protect = require("../middlewares/authMiddleware");
+
 const {
   uploadImg,
   getImgs,
@@ -11,8 +13,8 @@ const {
 const router = express.Router();
 const upload = multer({ dest: "uploads/" });
 
-router.post("/", upload.single("file"), uploadImg);
-router.get("/", getImgs);
-router.get("/:id", getImg).delete("/:id", deleteImg);
+router.post("/", protect, upload.single("file"), uploadImg);
+router.get("/", protect, getImgs);
+router.get("/:id", getImg).delete("/:id", protect, deleteImg);
 
 module.exports = router;
