@@ -1,5 +1,8 @@
+import { useSelector } from "react-redux";
+
 function Dashboard() {
-  return <div>This will be the Dashboard</div>;
+  const user = useSelector((state) => state.auth.user);
+  return <div>Welcome, X</div>;
 }
 
 export default Dashboard;

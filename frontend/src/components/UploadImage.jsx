@@ -38,23 +38,29 @@ function UploadImage() {
   return (
     <>
       {isLoading && <LoadingSpinner size="100px" color="#0073e6" />}
-      <div>
-        <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
-          <input
-            type="file"
-            ref={fileInputRef}
-            onChange={(e) => {
-              setFile(e.target.files[0]);
-            }}
-            className="border p-2 rounded"
-          />
-          <button
-            type="submit"
-            className="bg-blue-500 text-white py-2 px-4 rounded hover:cursor-pointer hover:bg-blue-600"
+      <div className="w-full flex justify-center items-center m-5">
+        <div className="w-[40%] bg-gray-200 shadow-2xl shadow-blue-200 flex justify-center items-center p-20 rounded-2xl">
+          <h1>Let's upload your images</h1>
+          <form
+            onSubmit={handleSubmit}
+            className="flex flex-col space-y-4 w-[80%]"
           >
-            Upload
-          </button>
-        </form>
+            <input
+              type="file"
+              ref={fileInputRef}
+              onChange={(e) => {
+                setFile(e.target.files[0]);
+              }}
+              className="border p-2 rounded"
+            />
+            <button
+              type="submit"
+              className="bg-blue-500 text-white py-2 px-4 rounded hover:cursor-pointer hover:bg-blue-600"
+            >
+              Upload
+            </button>
+          </form>
+        </div>
       </div>
     </>
   );

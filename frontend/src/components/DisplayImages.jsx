@@ -6,51 +6,51 @@ import { toast } from "react-toastify";
 import DeleteConfirmationModal from "./Modal";
 
 function DisplayImages() {
-  const [images, setImages] = useState([]);
+  // const [images, setImages] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedImageId, setSelectedImageId] = useState(null);
-  const [selectedImagePublicId, setSelectedImagePublicId] = useState(null);
+  // const [isModalOpen, setIsModalOpen] = useState(false);
+  // const [selectedImageId, setSelectedImageId] = useState(null);
+  // const [selectedImagePublicId, setSelectedImagePublicId] = useState(null);
 
-  useEffect(() => {
-    const fetchImages = async () => {
-      try {
-        const res = await axios.get(`${baseUrl}/api/images`);
-        setImages(res.data.data.images);
-      } catch (error) {
-        console.log(`Error Fetching Images: 💥${error}💥`);
-      }
-    };
+  // useEffect(() => {
+  //   const fetchImages = async () => {
+  //     try {
+  //       const res = await axios.get(`${baseUrl}/api/images`);
+  //       setImages(res.data.data.images);
+  //     } catch (error) {
+  //       console.log(`Error Fetching Images: 💥${error}💥`);
+  //     }
+  //   };
 
-    fetchImages();
-  }, []);
-  // console.log(images.map((image) => console.log(image.url)));
+  //   fetchImages();
+  // }, []);
+  // // console.log(images.map((image) => console.log(image.url)));
 
-  // const onConfirm1 = async () => {
-  const handleDelete = async () => {
-    if (!selectedImageId) return;
-    try {
-      setIsLoading(true);
-      await axios.delete(`${baseUrl}/api/images/${selectedImageId}`);
+  // // const onConfirm1 = async () => {
+  // const handleDelete = async () => {
+  //   if (!selectedImageId) return;
+  //   try {
+  //     setIsLoading(true);
+  //     await axios.delete(`${baseUrl}/api/images/${selectedImageId}`);
 
-      //remove from ui
-      setImages((prevImages) =>
-        prevImages.filter((image) => image._id !== selectedImageId)
-      );
-      toast.success("Image Deleted Successfully");
-      setIsLoading(false);
-      setIsModalOpen(false);
-      setSelectedImageId(null);
-      setSelectedImagePublicId(null);
-    } catch (error) {
-      console.log(`Error deleting image: 💥${error}💥 `);
-      toast.error("Failed to delete the image!");
-    }
-  };
+  //     //remove from ui
+  //     setImages((prevImages) =>
+  //       prevImages.filter((image) => image._id !== selectedImageId)
+  //     );
+  //     toast.success("Image Deleted Successfully");
+  //     setIsLoading(false);
+  //     setIsModalOpen(false);
+  //     setSelectedImageId(null);
+  //     setSelectedImagePublicId(null);
+  //   } catch (error) {
+  //     console.log(`Error deleting image: 💥${error}💥 `);
+  //     toast.error("Failed to delete the image!");
+  //   }
+  // };
 
-  useEffect(() => {
-    console.log("isLoading State right now is: ", isLoading);
-  }, [isLoading]);
+  // useEffect(() => {
+  //   console.log("isLoading State right now is: ", isLoading);
+  // }, [isLoading]);
 
   return (
     <>
@@ -60,6 +60,7 @@ function DisplayImages() {
         </div>
       )}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 m-10">
+        <h1>Here, all the uploaded images so far will appear</h1>
         {images.map((image, index) => (
           <div
             key={index}
