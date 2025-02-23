@@ -1,4 +1,6 @@
 import { useRef, useState } from "react";
+import { useDispatch } from "react-redux";
+import { uploadImg } from "../features/images/imgSlice";
 import axios from "axios";
 import { toast } from "react-toastify";
 import baseUrl from "../api/url";
@@ -9,18 +11,28 @@ function UploadImage() {
   const [isLoading, setIsLaoding] = useState(false);
   const fileInputRef = useRef(null);
 
+  const dispatch = useDispatch();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!file) {
+      toast.error("Please select a file to upload.");
+      return;
+    }
     const formData = new FormData();
     formData.append("file", file);
 
     try {
       setIsLaoding(true);
 
-      const response = await axios.post(`${baseUrl}/api/images`, formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
+      const response = await dispatch(uploadImg(formData));
 
+      // const response = await axios.post(`${baseUrl}/api/images`, formData, {
+      //   headers: { "Content-Type": "multipart/form-data" },
+      // });
+
+      console.log("Response for uploaded image: ", response.payload);
       toast.success("Image Uploaded Successfully!");
       setIsLaoding(false);
       setFile(null);
@@ -29,7 +41,7 @@ function UploadImage() {
         fileInputRef.current.value = "";
       }
 
-      console.log(response.data.url);
+      // console.log(response.data.url);
     } catch (error) {
       console.error(error);
       toast.error("Failed to upload image.");

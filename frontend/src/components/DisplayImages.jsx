@@ -1,56 +1,37 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
-import baseUrl from "../api/url";
+import { useDispatch, useSelector } from "react-redux";
+import { deleteImg, getImgs } from "../features/images/imgSlice";
 import LoadingSpinner from "./LoadingSpinner";
 import { toast } from "react-toastify";
 import DeleteConfirmationModal from "./Modal";
 
+import axios from "axios";
+import baseUrl from "../api/url";
+
 function DisplayImages() {
-  // const [images, setImages] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  // const [isModalOpen, setIsModalOpen] = useState(false);
-  // const [selectedImageId, setSelectedImageId] = useState(null);
-  // const [selectedImagePublicId, setSelectedImagePublicId] = useState(null);
+  const dispatch = useDispatch();
+  const { images, isLoading, error } = useSelector((state) => state.images);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedImageId, setSelectedImageId] = useState(null);
 
-  // useEffect(() => {
-  //   const fetchImages = async () => {
-  //     try {
-  //       const res = await axios.get(`${baseUrl}/api/images`);
-  //       setImages(res.data.data.images);
-  //     } catch (error) {
-  //       console.log(`Error Fetching Images: 💥${error}💥`);
-  //     }
-  //   };
+  // Fetch Images on the Mount
+  useEffect(() => {
+    dispatch(getImgs());
+  }, [dispatch]);
 
-  //   fetchImages();
-  // }, []);
-  // // console.log(images.map((image) => console.log(image.url)));
+  const handleDelete = async () => {
+    if (!selectedImageId) return;
 
-  // // const onConfirm1 = async () => {
-  // const handleDelete = async () => {
-  //   if (!selectedImageId) return;
-  //   try {
-  //     setIsLoading(true);
-  //     await axios.delete(`${baseUrl}/api/images/${selectedImageId}`);
+    try {
+      await dispatch(deleteImg(selectedImageId));
+      toast.success("Image Deleted Successfully");
 
-  //     //remove from ui
-  //     setImages((prevImages) =>
-  //       prevImages.filter((image) => image._id !== selectedImageId)
-  //     );
-  //     toast.success("Image Deleted Successfully");
-  //     setIsLoading(false);
-  //     setIsModalOpen(false);
-  //     setSelectedImageId(null);
-  //     setSelectedImagePublicId(null);
-  //   } catch (error) {
-  //     console.log(`Error deleting image: 💥${error}💥 `);
-  //     toast.error("Failed to delete the image!");
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   console.log("isLoading State right now is: ", isLoading);
-  // }, [isLoading]);
+      setIsModalOpen(false);
+      setSelectedImageId(null);
+    } catch (error) {
+      toast.error(error || "Failed to Delete Image.");
+    }
+  };
 
   return (
     <>
@@ -59,44 +40,47 @@ function DisplayImages() {
           <LoadingSpinner size="100px" color="#0073e6" />
         </div>
       )}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 m-10">
-        <h1>Here, all the uploaded images so far will appear</h1>
-        {images.map((image, index) => (
-          <div
-            key={index}
-            className="rounded overflow-hidden shadow-lg flex flex-col gap-2"
-          >
-            <img
-              src={image.url}
-              alt={`Uploaded ${index}`}
-              className="w-full h-48 object-cover"
-            />
-            <p className="px-6 py-3">{image.name}</p>
-            <button
-              // onClick={() => handleDelete(image._id, image.public_id)}
-              onClick={() => {
-                setSelectedImageId(image._id);
-                setSelectedImagePublicId(image.public_id);
-                setIsModalOpen(true);
-              }}
-              className="text-2xl font-medium bg-red-700 text-red-200 hover:text-red-700 hover:bg-red-200 hover:cursor-pointer"
+
+      {error && <p className="text-red-500 text-center">{error}</p>}
+
+      <div className="p-8">
+        <h1 className="text-3xl font-bold mb-6 text-center">Your Gallery</h1>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 ">
+          {images.map((image) => (
+            <div
+              key={image._id}
+              className="border rounded-lg overflow-hidden shadow-md "
             >
-              Delete
-            </button>
-          </div>
-        ))}
-        <DeleteConfirmationModal
-          isOpen={isModalOpen}
-          onClose={() => {
-            setIsModalOpen(false);
-            setSelectedImageId(null);
-            setSelectedImagePublicId(null);
-          }}
-          onConfirm={handleDelete}
-          loading={isLoading}
-          // onConfirm={() => handleDelete(selectedImageId, selectedImagePublicId)}
-        />
+              <img
+                src={image.url}
+                alt={image.name}
+                className="w-full h-48 object-cover"
+              />
+              <div className="p-4 flex justify-center items-center flex-col gap-5">
+                <h2 className="text-lg font-medium">{image.name}</h2>
+                <button
+                  onClick={() => {
+                    setSelectedImageId(image._id);
+                    setIsModalOpen(true);
+                  }}
+                  className="w-[50%] py-3 text-xl font-medium tracking-wider text-red-100 bg-red-500 text-center hover:cursor-pointer hover:rounded-full hover:bg-red-100 hover:text-red-500 transition-all duration-200 ease-in"
+                >
+                  Delete
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
+      <DeleteConfirmationModal
+        isOpen={isModalOpen}
+        onClose={() => {
+          setIsModalOpen(false);
+          setSelectedImageId(null);
+        }}
+        onConfirm={handleDelete}
+        loading={isLoading}
+      />
     </>
   );
 }
