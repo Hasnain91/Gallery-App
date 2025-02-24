@@ -85,8 +85,8 @@ const deleteImg = async (req, res) => {
     await cloudinary.uploader.destroy(image.public_id);
 
     // Delete from db
-    // await Img.findByIdAndDelete(id);
-    await Img.deleteOne();
+    await Img.findByIdAndDelete(id);
+    // await Img.deleteOne();
 
     res.status(200).json({
       status: "success",

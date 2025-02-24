@@ -1,10 +1,8 @@
 import { useState } from "react";
-import axios from "axios";
 import { toast } from "react-toastify";
 import { FaSignInAlt } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import baseUrl from "../api/url";
 import { setLoading, setError, login } from "../features/auth/authSlice";
 import LoadingSpinner from "../components/LoadingSpinner";
 
@@ -34,36 +32,22 @@ function Login() {
     }
 
     try {
-      // dispatch(setLoading(true));
-      // const response = await axios.post(`${baseUrl}/api/users/login`, {
-      //   email,
-      //   password,
-      // });
+      const response = await dispatch(login({ email, password }));
+      console.log("Response status is: ", response.payload.status);
 
-      await dispatch(login({ email, password }));
-
-      toast.success("Login Successful");
-
-      // dispatch(loginSuccess(response.data));
-      // console.log(response.data);
-
-      setFormData({
-        email: "",
-        password: "",
-      });
-
-      // console.log("Login Response:", response.data);
-
-      // dispatch(setLoading(false));
-      navigate("/dashboard");
+      if (response.payload.status === "success") {
+        toast.success("Login Successful");
+        setFormData({
+          email: "",
+          password: "",
+        });
+        navigate("/dashboard");
+      } else {
+        toast.error("Invalid Email or Password");
+      }
     } catch (error) {
       console.error("Login Error: ", error);
       toast.error(error || "Failed to login. Please try again");
-      // dispatch(
-      //   setError(
-      //     error.response?.data?.message || "Failed to login. Please try again"
-      //   )
-      // );
     }
   };
   return (

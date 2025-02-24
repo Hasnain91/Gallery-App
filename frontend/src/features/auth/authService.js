@@ -50,6 +50,7 @@ export const loginUser = async (credentials) => {
   const response = await axios.post(`${baseUrl}/api/users/login`, credentials);
   console.log("Response Data: ", response.data);
   console.log("Backend Response: ", response);
+  console.log(response.message);
   return response.data;
 };
 

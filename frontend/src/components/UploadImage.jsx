@@ -1,9 +1,7 @@
 import { useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { uploadImg } from "../features/images/imgSlice";
-import axios from "axios";
 import { toast } from "react-toastify";
-import baseUrl from "../api/url";
 import LoadingSpinner from "./LoadingSpinner";
 
 function UploadImage() {
@@ -28,10 +26,6 @@ function UploadImage() {
 
       const response = await dispatch(uploadImg(formData));
 
-      // const response = await axios.post(`${baseUrl}/api/images`, formData, {
-      //   headers: { "Content-Type": "multipart/form-data" },
-      // });
-
       console.log("Response for uploaded image: ", response.payload);
       toast.success("Image Uploaded Successfully!");
       setIsLaoding(false);
@@ -40,8 +34,6 @@ function UploadImage() {
       if (fileInputRef.current) {
         fileInputRef.current.value = "";
       }
-
-      // console.log(response.data.url);
     } catch (error) {
       console.error(error);
       toast.error("Failed to upload image.");
@@ -50,12 +42,11 @@ function UploadImage() {
   return (
     <>
       {isLoading && <LoadingSpinner size="100px" color="#0073e6" />}
-      <div className="w-full flex justify-center items-center m-5">
-        <div className="w-[40%] bg-gray-200 shadow-2xl shadow-blue-200 flex justify-center items-center p-20 rounded-2xl">
-          <h1>Let's upload your images</h1>
+      <div className="w-full h-screen flex justify-center items-center">
+        <div className="w-[20%] bg-gray-200 shadow-2xl shadow-blue-300 flex justify-center items-center p-10 rounded-2xl">
           <form
             onSubmit={handleSubmit}
-            className="flex flex-col space-y-4 w-[80%]"
+            className="flex flex-col space-y-4 w-[100%]"
           >
             <input
               type="file"
@@ -67,7 +58,7 @@ function UploadImage() {
             />
             <button
               type="submit"
-              className="bg-blue-500 text-white py-2 px-4 rounded hover:cursor-pointer hover:bg-blue-600"
+              className="bg-blue-500 text-white text-xl font-bold tracking-wider py-2 px-4 rounded hover:cursor-pointer hover:bg-white hover:text-blue-500"
             >
               Upload
             </button>

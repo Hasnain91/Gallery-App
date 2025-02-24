@@ -5,9 +5,6 @@ import LoadingSpinner from "./LoadingSpinner";
 import { toast } from "react-toastify";
 import DeleteConfirmationModal from "./Modal";
 
-import axios from "axios";
-import baseUrl from "../api/url";
-
 function DisplayImages() {
   const dispatch = useDispatch();
   const { images, isLoading, error } = useSelector((state) => state.images);

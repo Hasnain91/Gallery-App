@@ -1,11 +1,9 @@
-import axios from "axios";
 import { useState } from "react";
-import { FaUsb, FaUser } from "react-icons/fa";
-import baseUrl from "../api/url";
+import { FaUser } from "react-icons/fa";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { setLoading, setError, register } from "../features/auth/authSlice";
+import { register } from "../features/auth/authSlice";
 import LoadingSpinner from "../components/LoadingSpinner";
 
 function Register() {
@@ -36,19 +34,10 @@ function Register() {
     }
 
     try {
-      // dispatch(setLoading(true));
-      // const response = await axios.post(`${baseUrl}/api/users`, {
-      //   name,
-      //   email,
-      //   password,
-      // });
+      const response = await dispatch(register({ name, email, password }));
+      console.log(response);
 
-      // //dispatch register success action
-      // dispatch(registerSuccess(response.data.data));
-      await dispatch(register({ name, email, password }));
       toast.success("User Registered Successfully!");
-
-      console.log("Response:", response.data.data);
 
       setFormData({
         name: "",
@@ -57,16 +46,10 @@ function Register() {
         confirmPassword: "",
       });
 
-      // dispatch(setLoading(false));
       navigate("/dashboard");
     } catch (error) {
       console.error("Registration Error: ", error);
       toast.error(error || "Failed to Login. Please try again");
-      // dispatch(
-      //   setError(
-      //     error.response?.data?.message || "Failed to Login. Please try again"
-      //   )
-      // );
     }
   };
 
