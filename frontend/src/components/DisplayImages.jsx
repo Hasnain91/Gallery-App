@@ -4,6 +4,8 @@ import { deleteImg, getImgs } from "../features/images/imgSlice";
 import LoadingSpinner from "./LoadingSpinner";
 import { toast } from "react-toastify";
 import DeleteConfirmationModal from "./Modal";
+import Modal from "./Modal";
+import { FaTrashAlt } from "react-icons/fa";
 
 function DisplayImages() {
   const dispatch = useDispatch();
@@ -32,11 +34,11 @@ function DisplayImages() {
 
   return (
     <>
-      {isLoading && (
+      {/* {isLoading && (
         <div className="fixed inset-0 flex items-center justify-center bg-white bg-opacity-60 backdrop-blur-sm z-50">
           <LoadingSpinner size="100px" color="#0073e6" />
         </div>
-      )}
+      )} */}
 
       {error && <p className="text-red-500 text-center">{error}</p>}
 
@@ -69,7 +71,32 @@ function DisplayImages() {
           ))}
         </div>
       </div>
-      <DeleteConfirmationModal
+      <Modal open={isModalOpen} onClose={() => setIsModalOpen(false)}>
+        <div className="w-96 text-center">
+          <FaTrashAlt className="mx-auto text-red-500 hover:cursor-pointer" />
+          <div className="w-80 mx-auto my-4">
+            <h3 className="text-2xl font-bold text-gray-700">Confirm Delete</h3>
+            <p className="text-lg font-medium text-gray-500">
+              Are you sure you want to delete this image?
+            </p>
+          </div>
+          <div className="flex gap-20">
+            <button
+              onClick={handleDelete}
+              className="flex gap-2 items-center justify-center py-2 px-4 text-xl tracking-wider font-semibold shadow-md rounded-lg text-white bg-red-600 shadow-red-400/40 w-full transition duration-300 ease-in-out transform hover:cursor-pointer hover:shadow-lg hover:-translate-y-1"
+            >
+              {isLoading ? "Deleting" : "Delete"}
+            </button>
+            <button
+              onClick={() => setIsModalOpen(false)}
+              className="flex gap-2 items-center justify-center py-2 px-4 text-xl tracking-wider font-semibold shadow-md rounded-lg bg-white text-gray-600 w-full transition duration-300 ease-in-out transform hover:cursor-pointer hover:shadow-lg hover:-translate-y-1"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      </Modal>
+      {/* <DeleteConfirmationModal
         isOpen={isModalOpen}
         onClose={() => {
           setIsModalOpen(false);
@@ -77,7 +104,7 @@ function DisplayImages() {
         }}
         onConfirm={handleDelete}
         loading={isLoading}
-      />
+      /> */}
     </>
   );
 }
